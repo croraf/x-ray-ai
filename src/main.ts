@@ -1,9 +1,15 @@
+import "@tensorflow/tfjs-node-gpu";
+
 import argparse from "argparse";
 
 import data from "./data";
 import { model } from "./model";
 
-async function run(epochs, batchSize, modelSavePath) {
+async function run(
+  epochs: number,
+  batchSize: number,
+  modelSavePath: string | null | undefined,
+) {
   await data.loadData();
 
   const { images: trainImages, labels: trainLabels } = data.getTrainData();

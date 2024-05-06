@@ -24,7 +24,7 @@ const LABEL_RECORD_BYTE = 1;
 const LABEL_FLAT_SIZE = 10;
 
 // Downloads a test file only once and returns the buffer for the file.
-async function fetchOnceAndSaveToDiskWithBuffer(filename) {
+async function fetchOnceAndSaveToDiskWithBuffer(filename: string) {
   return new Promise((resolve) => {
     const url = `${BASE_URL}${filename}.gz`;
     if (fs.existsSync(filename)) {
@@ -43,7 +43,7 @@ async function fetchOnceAndSaveToDiskWithBuffer(filename) {
   });
 }
 
-function loadHeaderValues(buffer, headerLength) {
+function loadHeaderValues(buffer, headerLength: number) {
   const headerValues = [];
   for (let i = 0; i < headerLength / 4; i++) {
     // Header data is stored in-order (aka big-endian)
@@ -52,7 +52,7 @@ function loadHeaderValues(buffer, headerLength) {
   return headerValues;
 }
 
-async function loadImages(filename) {
+async function loadImages(filename: string) {
   const buffer = await fetchOnceAndSaveToDiskWithBuffer(filename);
 
   const headerBytes = IMAGE_HEADER_BYTES;
@@ -79,7 +79,7 @@ async function loadImages(filename) {
   return images;
 }
 
-async function loadLabels(filename) {
+async function loadLabels(filename: string) {
   const buffer = await fetchOnceAndSaveToDiskWithBuffer(filename);
 
   const headerBytes = LABEL_HEADER_BYTES;
@@ -104,13 +104,12 @@ async function loadLabels(filename) {
 
 /** Helper class to handle loading training and test data. */
 class MnistDataset {
-  constructor() {
-    this.dataset = null;
-    this.trainSize = 0;
-    this.testSize = 0;
-    this.trainBatchIndex = 0;
-    this.testBatchIndex = 0;
-  }
+  dataset: null | [Float32Array[], Int32Array[], Float32Array[], Int32Array[]] =
+    null;
+  trainSize = 0;
+  testSize = 0;
+  trainBatchIndex = 0;
+  testBatchIndex = 0;
 
   /** Loads training and test data. */
   async loadData() {
@@ -132,7 +131,7 @@ class MnistDataset {
     return this.getData_(false);
   }
 
-  getData_(isTrainingData) {
+  private getData_(isTrainingData: boolean) {
     let imagesIndex;
     let labelsIndex;
     if (isTrainingData) {
@@ -142,23 +141,44 @@ class MnistDataset {
       imagesIndex = 2;
       labelsIndex = 3;
     }
-    const size = this.dataset[imagesIndex].length;
-    tf.util.assert(
-      this.dataset[labelsIndex].length === size,
+    const size = this.dataset![imagesIndex].length;
+
+    /* for (let i = 0; i < 10; i++) {
+      const imageArray = Array.from(this.dataset[imagesIndex][i]).map(
+        (value: number) => (value > 0.9 ? "█" : value > 0.6 ? 'X' : value > 0.2 ? "." : " "),
+      );
+
+      for (let j = 0; j < 28; j++) {
+        for (let k = 0; k < 28; k++) {
+          process.stdout.write(imageArray[j * 28 + k] + " ");
+        }
+        console.log();
+      }
+      console.log();
+      console.log();
+    } */
+
+    assert(
+      this.dataset![labelsIndex].length === size,
       `Mismatch in the number of images (${size}) and ` +
-        `the number of labels (${this.dataset[labelsIndex].length})`,
+        `the number of labels (${this.dataset![labelsIndex].length})`,
     );
 
     // Only create one big array to hold batch of images.
-    const imagesShape = [size, IMAGE_HEIGHT, IMAGE_WIDTH, 1];
+    const imagesShape: [number, number, number, number] = [
+      size,
+      IMAGE_HEIGHT,
+      IMAGE_WIDTH,
+      1,
+    ];
     const images = new Float32Array(tf.util.sizeFromShape(imagesShape));
     const labels = new Int32Array(tf.util.sizeFromShape([size, 1]));
 
     let imageOffset = 0;
     let labelOffset = 0;
     for (let i = 0; i < size; ++i) {
-      images.set(this.dataset[imagesIndex][i], imageOffset);
-      labels.set(this.dataset[labelsIndex][i], labelOffset);
+      images.set(this.dataset![imagesIndex][i], imageOffset);
+      labels.set(this.dataset![labelsIndex][i], labelOffset);
       imageOffset += IMAGE_FLAT_SIZE;
       labelOffset += 1;
     }
