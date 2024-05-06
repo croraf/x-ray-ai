@@ -6,7 +6,7 @@ export const modelTraining = async (
   trainLabels: tf.Tensor<tf.Rank>,
   batchSize: number,
   epochs: number,
-  modelSavePath: string | null | undefined,
+  modelSavePath: String | null | undefined,
 ) => {
   let epochBeginTime;
   let millisPerStep;

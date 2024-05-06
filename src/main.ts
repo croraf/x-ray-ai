@@ -11,7 +11,7 @@ import { modelTraining } from "./modelTraining";
 async function run(
   epochs: number,
   batchSize: number,
-  modelSavePath: string | null | undefined,
+  modelSavePath: String | null | undefined,
 ) {
   await data.loadData();
 
@@ -64,7 +64,7 @@ const parser = new argparse.ArgumentParser({
 });
 parser.add_argument("--epochs", {
   type: "int",
-  default: 4,
+  default: 10,
   help: "Number of epochs to train the model for.",
 });
 parser.add_argument("--batch_size", {
