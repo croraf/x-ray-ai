@@ -40,6 +40,8 @@ async function run(
   //const { images: testImages, labels: testLabels } = data.getTestData();
   const evalOutput = model.evaluate(testImages, testLabels);
 
+  console.log(evalOutput);
+
   console.log(
     `\nEvaluation result:\n` +
       `  Loss = ${evalOutput[0].dataSync()[0].toFixed(3)}; ` +
@@ -58,7 +60,7 @@ const parser = new argparse.ArgumentParser({
 });
 parser.add_argument("--epochs", {
   type: "int",
-  default: 4,
+  default: 3,
   help: "Number of epochs to train the model for.",
 });
 parser.add_argument("--batch_size", {
