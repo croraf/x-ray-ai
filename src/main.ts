@@ -1,12 +1,12 @@
 import "@tensorflow/tfjs-node-gpu";
 import tf from "@tensorflow/tfjs";
-import fs from "fs";
 import argparse from "argparse";
 
 import data from "./data";
 import { getModel } from "./model";
 import { readCustomTestData } from "./image_manipulation";
 import { resultAnalysis } from "./result_analysis";
+import { modelTraining } from "./modelTraining";
 
 async function run(
   epochs: number,
@@ -17,11 +17,11 @@ async function run(
 
   const { images: trainImages, labels: trainLabels } = data.getTrainData();
 
-  // const model = getModel();
-  const model = await tf.loadLayersModel(
+  const model = getModel();
+  /* const model = await tf.loadLayersModel(
     "file:///home/croraf/Desktop/Programiranje/open-source/tensorflow_AI/model/model.json",
   );
-  console.log("Model loaded successfully!");
+  console.log("Model loaded successfully!"); */
 
   const optimizer = "rmsprop";
   model.compile({
@@ -32,33 +32,21 @@ async function run(
 
   model.summary();
 
-  let epochBeginTime;
-  let millisPerStep;
-  const validationSplit = 0.15;
-  const numTrainExamplesPerEpoch = trainImages.shape[0] * (1 - validationSplit);
-  const numTrainBatchesPerEpoch = Math.ceil(
-    numTrainExamplesPerEpoch / batchSize,
+  await modelTraining(
+    model,
+    trainImages,
+    trainLabels,
+    batchSize,
+    epochs,
+    modelSavePath,
   );
 
-  /* const dateTrainingStart = Date.now();
-  await model.fit(trainImages, trainLabels, {
-    epochs,
-    batchSize,
-    validationSplit,
-  });
-
-  if (modelSavePath != null) {
-    await model.save(`file://${modelSavePath}`);
-    console.log(`Saved model to path: ${modelSavePath}`);
-  }
-
-  console.log(
-    "Total training duration [min]: ",
-    (Date.now() - dateTrainingStart) / 1000 / 60,
-  ); */
-
   //const { images: testImages, labels: testLabels } = data.getTestData();
-  const { images: testImages, labels: testLabels, labelsPlain } = readCustomTestData();
+  const {
+    images: testImages,
+    labels: testLabels,
+    labelsPlain,
+  } = readCustomTestData();
 
   /* const evalOutput = model.evaluate(testImages, testLabels);
   console.log(
@@ -76,7 +64,7 @@ const parser = new argparse.ArgumentParser({
 });
 parser.add_argument("--epochs", {
   type: "int",
-  default: 14,
+  default: 4,
   help: "Number of epochs to train the model for.",
 });
 parser.add_argument("--batch_size", {
