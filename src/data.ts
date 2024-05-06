@@ -24,7 +24,7 @@ const LABEL_RECORD_BYTE = 1;
 const LABEL_FLAT_SIZE = 10;
 
 // Downloads a test file only once and returns the buffer for the file.
-async function fetchOnceAndSaveToDiskWithBuffer(filename: string) {
+async function fetchOnceAndSaveToDiskWithBuffer(filename: String) {
   return new Promise((resolve) => {
     const url = `${BASE_URL}${filename}.gz`;
     if (fs.existsSync(filename)) {
@@ -52,7 +52,7 @@ function loadHeaderValues(buffer, headerLength: number) {
   return headerValues;
 }
 
-async function loadImages(filename: string) {
+async function loadImages(filename: String) {
   const buffer = await fetchOnceAndSaveToDiskWithBuffer(filename);
 
   const headerBytes = IMAGE_HEADER_BYTES;
@@ -79,7 +79,7 @@ async function loadImages(filename: string) {
   return images;
 }
 
-async function loadLabels(filename: string) {
+async function loadLabels(filename: String) {
   const buffer = await fetchOnceAndSaveToDiskWithBuffer(filename);
 
   const headerBytes = LABEL_HEADER_BYTES;

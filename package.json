@@ -14,7 +14,9 @@
     "@tensorflow/tfjs-node-gpu": "^4.19.0",
     "@tensorflow/tfjs-vis": "^1.5.1",
     "@types/node": "^20.12.8",
+    "@types/pngjs": "^6.0.5",
     "argparse": "^2.0.1",
+    "pngjs": "^7.0.0",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

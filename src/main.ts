@@ -4,6 +4,7 @@ import argparse from "argparse";
 
 import data from "./data";
 import { model } from "./model";
+import { readCustomTestData } from "./image_manipulation";
 
 async function run(
   epochs: number,
@@ -11,6 +12,8 @@ async function run(
   modelSavePath: string | null | undefined,
 ) {
   await data.loadData();
+
+  const { images: testImages, labels: testLabels } = readCustomTestData();
 
   const { images: trainImages, labels: trainLabels } = data.getTrainData();
   model.summary();
@@ -22,13 +25,19 @@ async function run(
   const numTrainBatchesPerEpoch = Math.ceil(
     numTrainExamplesPerEpoch / batchSize,
   );
+
+  const dateTrainingStart = Date.now();
   await model.fit(trainImages, trainLabels, {
     epochs,
     batchSize,
     validationSplit,
   });
+  console.log(
+    "Total training duration [min]: ",
+    (Date.now() - dateTrainingStart) / 1000 / 60,
+  );
 
-  const { images: testImages, labels: testLabels } = data.getTestData();
+  //const { images: testImages, labels: testLabels } = data.getTestData();
   const evalOutput = model.evaluate(testImages, testLabels);
 
   console.log(
@@ -49,7 +58,7 @@ const parser = new argparse.ArgumentParser({
 });
 parser.add_argument("--epochs", {
   type: "int",
-  default: 20,
+  default: 4,
   help: "Number of epochs to train the model for.",
 });
 parser.add_argument("--batch_size", {
@@ -59,6 +68,7 @@ parser.add_argument("--batch_size", {
 });
 parser.add_argument("--model_save_path", {
   type: "string",
+  default: "model",
   help: "Path to which the model will be saved after training.",
 });
 const args = parser.parse_args();
