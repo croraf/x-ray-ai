@@ -16,25 +16,23 @@ const normalizeData = (png, images, index) => {
           3,
       );
       images.set([idx], j / 4 + png.width * i + offset);
-      process.stdout.write(idx > 150 ? "█" : " ");
     }
-    console.log();
   }
 
-  for (let i = 0; i < png.height; i++) {
+  /* for (let i = 0; i < png.height; i++) {
     for (let j = 0; j < png.width; j++) {
       const idx = images[png.width * i + j + offset];
       process.stdout.write(idx > 150 ? "█" : " ");
     }
     console.log();
-  }
+  } */
 };
 
 export const readCustomTestData = () => {
-  const labelsData = [3, 8, 8];
-  const fileNames = ["3.png", "8.png", "8_2.png"];
+  const labelsData = [3, 8, 8, 4, 0, 5];
+  const fileNames = ["3.png", "8.png", "8_2.png", "4.png", "0.png", "5.png"];
   const pngs = fileNames.map((fileName) =>
-    PNG.sync.read(fs.readFileSync(fileName)),
+    PNG.sync.read(fs.readFileSync("test_data/" + fileName)),
   );
 
   const imagesShape: [number, number, number, number] = [
@@ -53,5 +51,6 @@ export const readCustomTestData = () => {
   return {
     images: tf.tensor4d(images, imagesShape),
     labels: tf.oneHot(tf.tensor1d(labels, "int32"), 10).toFloat(),
+    labelsPlain: labelsData,
   };
 };
