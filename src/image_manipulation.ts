@@ -41,5 +41,9 @@ export const readCustomTestData = () => {
   }
 
   labels.set([3]);
-  return { images, labels };
+
+  return {
+    images: tf.tensor4d(images, imagesShape),
+    labels: tf.oneHot(tf.tensor1d(labels, "int32"), 10).toFloat(),
+  };
 };
