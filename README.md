@@ -27,3 +27,9 @@ Will save the model in `/model` folder
 This script loads the stored model from the `/model` folder.
 It loads PNG images defined in `src/predict.ts` script and compares it with labels defined there.
 Actual images must be present in `test_data` folder.
+
+## Test Accuracy
+
+1. `npm run test`
+
+This script loads the stored model from the `/model` folder. It then computes the accuracy on a large MNIST dataset.

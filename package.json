@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "train": "ts-node -T src/train.ts",
-    "predict": "ts-node -T src/predict.ts"
+    "predict": "ts-node -T src/predict.ts",
+    "test": "ts-node -T src/test.ts"
   },
   "author": "",
   "license": "ISC",
