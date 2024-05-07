@@ -18,12 +18,14 @@ export const resultAnalysis = async (
         predictionsInt.push(j);
       }
     }
-    console.log();
   }
-  console.log(predictionsInt.map((item) => item.toString()));
+  console.log(
+    "predictions:\n",
+    predictionsInt.map((item) => item.toString()),
+  );
 
-  const wrongEvaluations = predictionsInt.map((prediction, index) =>
+  const expectedDiff = predictionsInt.map((prediction, index) =>
     prediction - labelsPlain[index] === 0 ? " " : labelsPlain[index].toString(),
   );
-  console.log(wrongEvaluations);
+  console.log("expected diff:\n", expectedDiff);
 };
