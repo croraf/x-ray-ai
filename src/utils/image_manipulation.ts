@@ -28,9 +28,10 @@ const flattenData = (png: PNG, images: Float32Array, index: number) => {
   } */
 };
 
-export const readCustomTestData = () => {
-  const labelsData = [3, 8, 8, 4, 0, 5];
-  const fileNames = ["3.png", "8.png", "8_2.png", "4.png", "0.png", "5.png"];
+export const readCustomTestData = (
+  labelsData: number[],
+  fileNames: String[],
+) => {
   const pngs = fileNames.map((fileName) =>
     PNG.sync.read(fs.readFileSync("test_data/" + fileName)),
   );
