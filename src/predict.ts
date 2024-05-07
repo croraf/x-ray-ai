@@ -8,7 +8,8 @@ const predict = async () => {
   const model = await tf.loadLayersModel(
     "file://model/model.json",
   );
-  console.log("Model loaded successfully!");
+  
+  console.log("\x1b[36m" + "\nModel loaded successfully!\n" + "\x1b[39m");
 
   const optimizer = "rmsprop";
   model.compile({

@@ -6,6 +6,7 @@ export const resultAnalysis = async (
   labelsPlain: number[],
 ) => {
   const predictions = model.predict(data) as tf.Tensor<tf.Rank.R2>;
+  console.log("\nPredictions tensor:");
   predictions.print();
 
   const predictionsData = predictions.dataSync();
@@ -20,12 +21,12 @@ export const resultAnalysis = async (
     }
   }
   console.log(
-    "predictions:\n",
+    "\nPredictions:\n",
     predictionsInt.map((item) => item.toString()),
   );
 
   const expectedDiff = predictionsInt.map((prediction, index) =>
     prediction - labelsPlain[index] === 0 ? " " : labelsPlain[index].toString(),
   );
-  console.log("expected diff:\n", expectedDiff);
+  console.log("Actual value:\n", expectedDiff);
 };
