@@ -17,11 +17,11 @@ async function run(
 
   const { images: trainImages, labels: trainLabels } = data.getTrainData();
 
-  const model = getModel();
-  /* const model = await tf.loadLayersModel(
+  /* const model = getModel(); */
+  const model = await tf.loadLayersModel(
     "file:///home/croraf/Desktop/Programiranje/open-source/tensorflow_AI/model/model.json",
   );
-  console.log("Model loaded successfully!"); */
+  console.log("Model loaded successfully!");
 
   const optimizer = "rmsprop";
   model.compile({
@@ -32,14 +32,14 @@ async function run(
 
   model.summary();
 
-  await modelTraining(
+  /* await modelTraining(
     model,
     trainImages,
     trainLabels,
     batchSize,
     epochs,
     modelSavePath,
-  );
+  ); */
 
   //const { images: testImages, labels: testLabels } = data.getTestData();
   const {
