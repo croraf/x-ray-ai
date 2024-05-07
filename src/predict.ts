@@ -6,7 +6,7 @@ import { resultAnalysis } from "./utils/result_analysis";
 const predict = async () => {
   ////////////////////////////////////////////
   const model = await tf.loadLayersModel(
-    "file:///home/croraf/Desktop/Programiranje/open-source/tensorflow_AI/model/model.json",
+    "file://model/model.json",
   );
   console.log("Model loaded successfully!");
 
