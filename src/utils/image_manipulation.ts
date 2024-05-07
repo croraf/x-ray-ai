@@ -4,7 +4,7 @@ import { PNG } from "pngjs";
 
 const imageResolution = 28 * 28;
 
-const normalizeData = (png, images, index) => {
+const flattenData = (png: PNG, images: Float32Array, index: number) => {
   const offset = index * imageResolution;
 
   for (let i = 0; i < png.height; i++) {
@@ -44,7 +44,7 @@ export const readCustomTestData = () => {
   const images = new Float32Array(tf.util.sizeFromShape(imagesShape));
   const labels = new Int32Array(tf.util.sizeFromShape([fileNames.length, 1]));
 
-  pngs.forEach((png, index) => normalizeData(png, images, index));
+  pngs.forEach((png, index) => flattenData(png, images, index));
 
   labels.set(labelsData);
 

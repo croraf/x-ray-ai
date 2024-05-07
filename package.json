@@ -2,10 +2,10 @@
   "name": "tensorflow_ai",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node -T src/main.ts"
+    "train": "ts-node -T src/train.ts",
+    "predict": "ts-node -T src/predict.ts"
   },
   "author": "",
   "license": "ISC",
