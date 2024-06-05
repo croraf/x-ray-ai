@@ -9,13 +9,17 @@ export const resultAnalysis = async (
   console.log("\nPredictions tensor:");
   predictions.print();
 
-  const predictionsData = predictions.dataSync();
+  const classProbabilities = predictions.dataSync();
+
+  for (let i = 0; i < classProbabilities.length; i++) {
+    console.log(`Probability of class ${i}: ${classProbabilities[i]}`);
+  }
 
   // summary
-  const predictionsInt: number[] = [];
+  /* const predictionsInt: number[] = [];
   for (let i = 0; i < predictions.shape[0]; i++) {
     for (let j = 0; j < predictions.shape[1]; j++) {
-      if (predictionsData[i * predictions.shape[1] + j] === 1) {
+      if (classProbabilities[i * predictions.shape[1] + j] === 1) {
         predictionsInt.push(j);
       }
     }
@@ -28,5 +32,5 @@ export const resultAnalysis = async (
   const expectedDiff = predictionsInt.map((prediction, index) =>
     prediction - labelsPlain[index] === 0 ? " " : labelsPlain[index].toString(),
   );
-  console.log("Actual value:\n", expectedDiff);
+  console.log("Actual value:\n", expectedDiff); */
 };
